@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HCLTech — Apply via Referral</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+  :root {
+    --hcl-purple: #4B0082;
+    --accent: #7B2FBE;
+    --light: #f8f4ff;
+    --white: #ffffff;
+    --success: #22c55e;
+    --error: #ef4444;
+    --border: rgba(75,0,130,0.15);
+    --blue: #1a1a2e;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:var(--light); min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:2rem 1rem; }
+  .orb { position:fixed; border-radius:50%; filter:blur(80px); opacity:.1; pointer-events:none; z-index:0; }
+  .orb1 { width:500px; height:500px; background:var(--accent); top:-100px; right:-100px; }
+  .orb2 { width:400px; height:400px; background:var(--hcl-purple); bottom:-100px; left:-100px; }
+  .card { background:var(--white); border-radius:24px; padding:3rem; max-width:540px; width:100%; box-shadow:0 4px 40px rgba(75,0,130,.08),0 0 0 1px var(--border); position:relative; z-index:1; animation:up .5s ease; }
+  @keyframes up { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+  .logo { font-family:'Syne',sans-serif; font-weight:800; font-size:1rem; color:var(--hcl-purple); margin-bottom:2rem; display:flex; align-items:center; gap:8px; }
+  .dot { width:8px; height:8px; background:var(--accent); border-radius:50%; }
+  h1 { font-family:'Syne',sans-serif; font-size:1.7rem; font-weight:700; color:var(--blue); line-height:1.2; margin-bottom:.5rem; }
+  .badge { display:inline-block; background:rgba(123,47,190,.08); color:var(--accent); font-size:.78rem; font-weight:500; padding:4px 12px; border-radius:100px; margin-bottom:1.75rem; border:1px solid rgba(123,47,190,.15); }
+  .field { margin-bottom:1.1rem; }
+  label { display:block; font-size:.83rem; font-weight:500; color:#444; margin-bottom:5px; }
+  .req { color:var(--error); }
+  input { width:100%; padding:11px 14px; border:1.5px solid var(--border); border-radius:10px; font-family:'DM Sans',sans-serif; font-size:.93rem; color:var(--blue); background:var(--light); outline:none; transition:all .2s; }
+  input:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(123,47,190,.08); background:white; }
+  .two { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  .drop { border:2px dashed var(--border); border-radius:14px; padding:2rem 1rem; text-align:center; cursor:pointer; transition:all .2s; background:var(--light); position:relative; }
+  .drop:hover,.drop.over { border-color:var(--accent); background:rgba(123,47,190,.03); }
+  .drop input { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; }
+  .drop-icon { font-size:2rem; margin-bottom:.75rem; }
+  .drop p { font-size:.85rem; color:#777; }
+  .drop .sub { font-size:.75rem; color:#bbb; margin-top:4px; }
+  .picked { display:none; align-items:center; gap:8px; background:rgba(34,197,94,.06); border:1.5px solid rgba(34,197,94,.2); border-radius:8px; padding:8px 12px; margin-top:8px; font-size:.82rem; color:#15803d; }
+  .picked.on { display:flex; }
+  .btn { width:100%; padding:14px; background:var(--hcl-purple); color:white; border:none; border-radius:12px; font-family:'Syne',sans-serif; font-size:1rem; font-weight:600; cursor:pointer; transition:all .2s; margin-top:1.5rem; }
+  .btn:hover:not(:disabled) { background:var(--accent); transform:translateY(-1px); box-shadow:0 8px 24px rgba(75,0,130,.25); }
+  .btn:disabled { opacity:.55; cursor:not-allowed; transform:none; }
+  .bar { display:none; height:4px; background:rgba(123,47,190,.1); border-radius:100px; margin-top:1rem; overflow:hidden; }
+  .bar.on { display:block; }
+  .fill { height:100%; background:linear-gradient(90deg,var(--hcl-purple),var(--accent)); width:0%; transition:width .3s; }
+  .err { display:none; color:var(--error); font-size:.8rem; margin-top:8px; padding:8px 12px; background:rgba(239,68,68,.05); border-radius:8px; border:1px solid rgba(239,68,68,.1); }
+  .err.on { display:block; }
+  .success { display:none; text-align:center; padding:1rem 0; animation:up .4s ease; }
+  .success.on { display:block; }
+  .s-icon { width:72px; height:72px; background:rgba(34,197,94,.08); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 1.5rem; font-size:2rem; border:2px solid rgba(34,197,94,.2); }
+  .success h2 { font-family:'Syne',sans-serif; font-size:1.4rem; color:var(--blue); margin-bottom:.75rem; }
+  .success p { color:#666; font-size:.88rem; line-height:1.7; }
+  @media(max-width:480px) { .card{padding:2rem 1.25rem;} .two{grid-template-columns:1fr;} h1{font-size:1.4rem;} }
+</style>
+</head>
+<body>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<div class="card" id="formCard">
+  <div class="logo"><div class="dot"></div>HCLTech Referral Portal</div>
+  <h1>Apply via Employee Referral</h1>
+  <div class="badge" id="jobBadge">Loading position...</div>
+
+  <div class="two">
+    <div class="field"><label>First Name <span class="req">*</span></label><input id="firstName" placeholder="Rahul"></div>
+    <div class="field"><label>Last Name <span class="req">*</span></label><input id="lastName" placeholder="Sharma"></div>
+  </div>
+  <div class="field"><label>Email Address <span class="req">*</span></label><input type="email" id="email" placeholder="rahul@example.com"></div>
+  <div class="two">
+    <div class="field"><label>Phone</label><input id="phone" placeholder="+91 98765 43210"></div>
+    <div class="field"><label>Experience (years) <span class="req">*</span></label><input id="exp" placeholder="5"></div>
+  </div>
+  <div class="two">
+    <div class="field"><label>Current Company</label><input id="company" placeholder="TCS"></div>
+    <div class="field"><label>Current CTC (LPA)</label><input id="ctc" placeholder="12"></div>
+  </div>
+  <div class="two">
+    <div class="field"><label>Expected CTC (LPA)</label><input id="ectc" placeholder="16"></div>
+    <div class="field"><label>Notice Period</label><input id="notice" placeholder="30 days"></div>
+  </div>
+  <div class="field"><label>LinkedIn Profile</label><input id="linkedin" placeholder="https://linkedin.com/in/yourname"></div>
+
+  <div class="field">
+  <label>Country <span class="req">*</span></label>
+  <input id="country" placeholder="India" value="India">
+  </div>
+
+
+  <div class="field">
+    <label>Upload Resume <span class="req">*</span></label>
+    <div class="drop" id="drop">
+      <input type="file" id="file" accept=".pdf,.doc,.docx">
+      <div class="drop-icon">📄</div>
+      <p>Drag & drop your resume here or click to browse</p>
+      <p class="sub">PDF, DOC, DOCX · Max 10MB</p>
+    </div>
+    <div class="picked" id="picked">✅ <span id="fname"></span></div>
+  </div>
+
+  <div class="err" id="err"></div>
+  <button class="btn" id="btn" onclick="submit()">Submit Application →</button>
+  <div class="bar" id="bar"><div class="fill" id="fill"></div></div>
+</div>
+
+<div class="card success" id="success">
+  <div class="s-icon">🎉</div>
+  <h2>Application Received!</h2>
+  <p>Thank you! We'll review your profile within 3 working days.<br><br>Shortlisted candidates will be referred directly to HCLTech recruiters. We'll contact you at the email provided if there's a match.</p>
+</div>
+
+<script>
+  const p = new URLSearchParams(location.search);
+  const jobTitle = p.get('job') || 'Open Position';
+  const jobId = p.get('id') || '';
+  const scriptUrl = p.get('script') || '';
+
+  document.getElementById('jobBadge').textContent = decodeURIComponent(jobTitle);
+  document.title = `Apply — ${decodeURIComponent(jobTitle)}`;
+
+  const fileInput = document.getElementById('file');
+  fileInput.onchange = () => {
+    if (fileInput.files[0]) {
+      document.getElementById('fname').textContent = fileInput.files[0].name;
+      document.getElementById('picked').classList.add('on');
+    }
+  };
+
+  const drop = document.getElementById('drop');
+  drop.ondragover = e => { e.preventDefault(); drop.classList.add('over'); };
+  drop.ondragleave = () => drop.classList.remove('over');
+  drop.ondrop = e => {
+    e.preventDefault(); drop.classList.remove('over');
+    const f = e.dataTransfer.files[0];
+    if (f) { fileInput.files = e.dataTransfer.files; document.getElementById('fname').textContent = f.name; document.getElementById('picked').classList.add('on'); }
+  };
+
+  function showErr(m) { const e = document.getElementById('err'); e.textContent = m; e.classList.add('on'); setTimeout(()=>e.classList.remove('on'),5000); }
+  function setFill(n) { document.getElementById('fill').style.width = n + '%'; }
+
+  async function submit() {
+    const v = id => document.getElementById(id).value.trim();
+    if (!v('firstName')) return showErr('First name is required');
+    if (!v('lastName')) return showErr('Last name is required');
+    if (!v('email') || !v('email').includes('@')) return showErr('Valid email is required');
+    if (!v('exp')) return showErr('Experience is required');
+    if (!fileInput.files[0]) return showErr('Please upload your resume');
+    if (fileInput.files[0].size > 10*1024*1024) return showErr('File too large — max 10MB');
+
+    const btn = document.getElementById('btn');
+    btn.disabled = true; btn.textContent = 'Uploading...';
+    document.getElementById('bar').classList.add('on'); setFill(20);
+
+    try {
+      const b64 = await new Promise((res,rej) => { const r = new FileReader(); r.onload=()=>res(r.result.split(',')[1]); r.onerror=rej; r.readAsDataURL(fileInput.files[0]); });
+      setFill(50);
+
+      const payload = {
+        firstName: v('firstName'), lastName: v('lastName'), email: v('email'),
+        phone: v('phone'), experience: v('exp'), company: v('company'),
+        ctc: v('ctc'), expectedCtc: v('ectc'), notice: v('notice'),
+        linkedin: v('linkedin'), jobTitle: decodeURIComponent(jobTitle),
+        country: v('country'),
+        jobId, fileName: fileInput.files[0].name,
+        fileType: fileInput.files[0].type, fileData: b64,
+        submittedAt: new Date().toISOString()
+      };
+
+      setFill(70);
+      const res = await fetch(scriptUrl, { method:'POST', body: JSON.stringify(payload) });
+      const result = await res.json();
+      setFill(90);
+
+      if (result.status === 'success') {
+        setFill(100);
+        setTimeout(() => {
+          document.getElementById('formCard').style.display = 'none';
+          document.getElementById('success').classList.add('on');
+        }, 500);
+      } else throw new Error(result.message || 'Submission failed');
+
+    } catch(e) {
+      showErr('Error: ' + e.message);
+      btn.disabled = false; btn.textContent = 'Submit Application →';
+      document.getElementById('bar').classList.remove('on'); setFill(0);
+    }
+  }
+</script>
+</body>
+</html>
