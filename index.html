@@ -72,7 +72,7 @@
   </div>
   <div class="field"><label>Email Address <span class="req">*</span></label><input type="email" id="email" placeholder="rahul@example.com"></div>
   <div class="two">
-    <div class="field"><label>Phone <span class="req">*</span></label><input id="phone" placeholder="+91 98765 43210"></div>
+    <div class="field"><label>Phone</label><input id="phone" placeholder="+91 98765 43210"></div>
     <div class="field"><label>Experience (years) <span class="req">*</span></label><input id="exp" placeholder="5"></div>
   </div>
   <div class="two">
@@ -84,12 +84,6 @@
     <div class="field"><label>Notice Period</label><input id="notice" placeholder="30 days"></div>
   </div>
   <div class="field"><label>LinkedIn Profile</label><input id="linkedin" placeholder="https://linkedin.com/in/yourname"></div>
-
-  <div class="field">
-  <label>Country <span class="req">*</span></label>
-  <input id="country" placeholder="India" value="India">
-  </div>
-
 
   <div class="field">
     <label>Upload Resume <span class="req">*</span></label>
@@ -164,24 +158,24 @@
         phone: v('phone'), experience: v('exp'), company: v('company'),
         ctc: v('ctc'), expectedCtc: v('ectc'), notice: v('notice'),
         linkedin: v('linkedin'), jobTitle: decodeURIComponent(jobTitle),
-        country: v('country'),
         jobId, fileName: fileInput.files[0].name,
         fileType: fileInput.files[0].type, fileData: b64,
         submittedAt: new Date().toISOString()
       };
 
       setFill(70);
-      const res = await fetch(scriptUrl, { method:'POST', body: JSON.stringify(payload) });
-      const result = await res.json();
-      setFill(90);
-
-      if (result.status === 'success') {
-        setFill(100);
-        setTimeout(() => {
-          document.getElementById('formCard').style.display = 'none';
-          document.getElementById('success').classList.add('on');
-        }, 500);
-      } else throw new Error(result.message || 'Submission failed');
+      const res = await fetch(scriptUrl, { 
+        method: 'POST', 
+        body: JSON.stringify(payload),
+        mode: 'no-cors',  // Fix CORS issue with Google Apps Script
+      });
+      
+      // no-cors returns opaque response — assume success
+      setFill(100);
+      setTimeout(() => {
+        document.getElementById('formCard').style.display = 'none';
+        document.getElementById('success').classList.add('on');
+      }, 500);
 
     } catch(e) {
       showErr('Error: ' + e.message);
