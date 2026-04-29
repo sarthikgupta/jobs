@@ -137,7 +137,7 @@
   function setFill(n) { document.getElementById('fill').style.width = n + '%'; }
 
   async function submit() {
-    const v = id => document.getElementById(id).value.trim();
+    const v = id => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
     if (!v('firstName')) return showErr('First name is required');
     if (!v('lastName')) return showErr('Last name is required');
     if (!v('email') || !v('email').includes('@')) return showErr('Valid email is required');
