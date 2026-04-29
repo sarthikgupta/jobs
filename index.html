@@ -158,7 +158,7 @@
         phone: v('phone'), experience: v('exp'), company: v('company'),
         ctc: v('ctc'), expectedCtc: v('ectc'), notice: v('notice'),
         linkedin: v('linkedin'), jobTitle: decodeURIComponent(jobTitle),
-        country: v('country'),
+        country: document.getElementById('country') ? v('country') : 'India',
         jobId, fileName: fileInput.files[0].name,
         fileType: fileInput.files[0].type, fileData: b64,
         submittedAt: new Date().toISOString()
@@ -166,15 +166,17 @@
 
       setFill(70);
 
-      // Send via POST with no-cors — Apps Script handles it via doPost
-      // Use text/plain to avoid preflight CORS issues
-      await fetch(scriptUrl, { 
-        method: 'POST',
-        body: JSON.stringify(payload),
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain;charset=UTF-8' }
+      // Use script tag injection (JSONP) - bypasses CORS completely
+      await new Promise((resolve) => {
+        const encoded = encodeURIComponent(JSON.stringify(payload));
+        const script = document.createElement('script');
+        script.src = `${scriptUrl}?data=${encoded}&callback=handleResponse`;
+        window.handleResponse = () => resolve();
+        // Resolve after 5s regardless
+        setTimeout(resolve, 5000);
+        document.head.appendChild(script);
       });
-      
+
       setFill(100);
       setTimeout(() => {
         document.getElementById('formCard').style.display = 'none';
