@@ -164,13 +164,15 @@
       };
 
       setFill(70);
-      const res = await fetch(scriptUrl, { 
-        method: 'POST', 
-        body: JSON.stringify(payload),
-        mode: 'no-cors',  // Fix CORS issue with Google Apps Script
+
+      // Google Apps Script requires no-cors with text/plain content type
+      // Send as URL with data parameter to bypass CORS
+      const encodedData = encodeURIComponent(JSON.stringify(payload));
+      await fetch(`${scriptUrl}?data=${encodedData}`, { 
+        method: 'GET',
+        mode: 'no-cors',
       });
       
-      // no-cors returns opaque response — assume success
       setFill(100);
       setTimeout(() => {
         document.getElementById('formCard').style.display = 'none';
